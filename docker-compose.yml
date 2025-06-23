@@ -1,0 +1,11 @@
+services:
+  db:
+    image: postgres:17-alpine
+    volumes:
+      - ./sql:/docker-entrypoint-initdb.d/
+    environment:
+      - POSTGRES_USER=root
+      - POSTGRES_PASSWORD=root
+      - POSTGRES_DB=adb
+    ports:
+      - 5432:5432
