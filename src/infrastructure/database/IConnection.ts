@@ -1,6 +1,6 @@
-export interface Connector<T> {
+export interface IConnection<T> {
     /*
      * Return the instance of the DB 
      */
-    get db(): T;
+    get pool(): T;
 }

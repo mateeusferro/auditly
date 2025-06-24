@@ -1,8 +1,8 @@
 import { Pool, PoolConfig } from "pg";
 import { envConfig } from "../configuration/env-config";
-import { Connector } from "./Connector";
+import { IConnection } from "./IConnection";
 
-export class PgConnector implements Connector<Pool> {
+export class PgConnection implements IConnection<Pool> {
     private _db: Pool;
 
     constructor() {
@@ -22,7 +22,7 @@ export class PgConnector implements Connector<Pool> {
         this._db = new Pool(poolConfig);
     }
 
-    get db(): Pool {
+    get pool(): Pool {
         return this._db;
     }
 }
