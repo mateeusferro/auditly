@@ -5,7 +5,8 @@ export interface EnvConfig {
     DB_PWD: string,
     DB_USER: string,
     ENV: string,
-    PORT: number
+    PORT: number,
+    HOST: string
 };
 
 export const envConfig: EnvConfig = {
@@ -15,5 +16,6 @@ export const envConfig: EnvConfig = {
     DB_PWD: String(process.env.POSTGRES_PASSWORD),
     DB_USER: String(process.env.POSTGRES_USER),
     ENV: String(process.env.NODE_ENV),
-    PORT: Number(process.env.PORT)
+    PORT: Number(process.env.PORT),
+    HOST: String(process.env.HOST)
 };
