@@ -1,4 +1,19 @@
 services:
+  app:
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    depends_on:
+      - db
+    environment:
+      - POSTGRES_HOST=db
+      - NODE_ENV=prod
+    env_file: 
+      - .env
+    ports:
+      - 8080:8080
+    networks:
+      - auditly_default
   db:
     image: postgres:17-alpine
     volumes:
@@ -9,3 +24,9 @@ services:
       - POSTGRES_DB=adb
     ports:
       - 5432:5432
+    networks:
+      - auditly_default
+
+networks:
+  auditly_default:
+    driver: bridge
