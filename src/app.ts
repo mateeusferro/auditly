@@ -1,21 +1,14 @@
-import fastify, { FastifyInstance } from "fastify";
 import { envConfig } from "./infrastructure/configuration/env-config";
-import { routers } from "./routers";
+import { IServer } from "./infrastructure/http/IServer";
+import { Server } from "./infrastructure/http/Server";
 
-const server: FastifyInstance = fastify({ logger: true });
-const port = envConfig.PORT;
-const host = envConfig.HOST;
+const port: number = envConfig.PORT;
+const host: string = envConfig.HOST;
 
-server.get("/ping", async (_, reply) => {
-    return reply.status(200).send("pong");
+const server: IServer = new Server({
+    routes: [""],
+    port,
+    host
 });
 
-server.listen({ port, host }, (err, address) => {
-    if (err) {
-        server.log.error(err);
-        process.exit(1);
-    }
-    console.log("Server listening at: ", address);
-});
-
-routers();
+server.listen();
