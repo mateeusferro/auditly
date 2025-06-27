@@ -24,10 +24,12 @@ export class LogRepository implements ILogRepository {
             RETURNING ID
         `;
 
-        const queryResult: QueryResult<{id: string}> = await this._db.query<{id: string}>(query, values).catch((err: unknown) => {
-            console.error(err);
-            throw new Error("Error while creating the log");
-        });
+        const queryResult: QueryResult<{id: string}> = await this._db
+            .query<{id: string}>(query, values)
+            .catch((err: unknown) => {
+                console.error(err);
+                throw new Error("Error while creating the log");
+            });
 
         return queryResult.rows[0].id;
     }
