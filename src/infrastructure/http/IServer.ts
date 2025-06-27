@@ -1,4 +1,5 @@
 export interface IServer {
-    routes(): void;
+
+    routes(routes: unknown[]): void;
     listen(): void;
 }
