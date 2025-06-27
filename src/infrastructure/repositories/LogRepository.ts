@@ -1,4 +1,4 @@
-import { Logs } from "@/domain/entities/Logs";
+import { Log } from "@/domain/entities/Log";
 import { ILogRepository } from "@/domain/repositories/ILogRepository";
 import { PgConnection } from "../database/PgConnection";
 import { Pool, QueryResult } from "pg";
@@ -10,7 +10,7 @@ export class LogRepository implements ILogRepository {
         this._db = new PgConnection().pool;
     }
 
-    async create(log: Logs): Promise<string> {
+    async create(log: Log): Promise<string> {
         const values = [log.action, log.actor, log.metadata, log.resource];
         const query = `
             INSERT INTO 

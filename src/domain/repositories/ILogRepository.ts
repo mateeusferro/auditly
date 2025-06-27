@@ -1,6 +1,6 @@
-import { Logs } from "../entities/Logs";
+import { Log } from "../entities/Log";
 
 export interface ILogRepository {
-    create(log: Logs): Promise<string>;
+    create(log: Log): Promise<string>;
     // For now I won't create the queries, because the focus will be filters
 }
