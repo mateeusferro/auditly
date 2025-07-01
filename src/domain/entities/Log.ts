@@ -11,7 +11,7 @@ export class Log {
     constructor(fields: { 
         id?: string, 
         actor: string, 
-        action: string, 
+        action: ActionEnum, 
         resource: string, 
         createTimestamp?: Date, 
         metadata: Record<string, unknown>
@@ -19,7 +19,7 @@ export class Log {
         const { id, actor, action, resource, createTimestamp, metadata} = fields;
         this.id = id;
         this.actor = actor;
-        this.action = action as ActionEnum;
+        this.action = action;
         this.resource = resource;
         this.createTimestamp = createTimestamp;
         this.metadata = metadata;
