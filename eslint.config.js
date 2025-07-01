@@ -2,7 +2,6 @@
 
 import eslint from "@eslint/js";
 import tseslint from "typescript-eslint";
-import vitest from "@vitest/eslint-plugin";
 
 export default tseslint.config(
   {
@@ -28,11 +27,8 @@ export default tseslint.config(
   },
   {
     files: ["test/*.test.ts", "test/*.spec.ts"],
-    plugins: {
-      vitest,
-    },
+    plugins: {},
     rules: {
-      ...vitest.configs.recommended.rules,
       "@typescript-eslint/unbound-method": "off",
     },
   },
