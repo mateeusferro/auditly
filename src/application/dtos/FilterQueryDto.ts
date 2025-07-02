@@ -1,4 +1,4 @@
-import { ActionEnum } from "@/domain/entities/ActionEnum";
+import { ActionEnum } from "../../domain/entities/ActionEnum";
 import { z } from "zod";
 
 export const FilterQuerySchema = z.object({

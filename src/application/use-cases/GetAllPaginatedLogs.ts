@@ -1,7 +1,7 @@
-import { ILogRepository } from "@/domain/repositories/ILogRepository";
-import { LogRepository } from "@/infrastructure/repositories/LogRepository";
+import { ILogRepository } from "../../domain/repositories/ILogRepository";
+import { LogRepository } from "../../infrastructure/repositories/LogRepository";
 import { Pageable, PageableDto } from "../dtos/PageableDto";
-import { Log } from "@/domain/entities/Log";
+import { Log } from "../../domain/entities/Log";
 
 export class GetAllPaginatedLogs {
     private _logRepository: ILogRepository;

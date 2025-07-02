@@ -1,6 +1,6 @@
-import { ILogRepository } from "@/domain/repositories/ILogRepository";
-import { LogRepository } from "@/infrastructure/repositories/LogRepository";
-import { Summary } from "@/domain/entities/Summary";
+import { ILogRepository } from "../../domain/repositories/ILogRepository";
+import { LogRepository } from "../../infrastructure/repositories/LogRepository";
+import { Summary } from "../../domain/entities/Summary";
 
 export class GetSummary {
     private _logRepository: ILogRepository;

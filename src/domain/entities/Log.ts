@@ -5,7 +5,7 @@ export class Log {
     public readonly actor: string;
     public readonly action: ActionEnum;
     public readonly resource: string;
-    public readonly createTimestamp?: Date;
+    public readonly timestamp?: string;
     public readonly metadata: Record<string, unknown>;
 
     constructor(fields: { 
@@ -13,15 +13,15 @@ export class Log {
         actor: string, 
         action: ActionEnum, 
         resource: string, 
-        createTimestamp?: Date, 
+        timestamp?: string, 
         metadata: Record<string, unknown>
     }) {
-        const { id, actor, action, resource, createTimestamp, metadata} = fields;
+        const { id, actor, action, resource, timestamp, metadata} = fields;
         this.id = id;
         this.actor = actor;
         this.action = action;
         this.resource = resource;
-        this.createTimestamp = createTimestamp;
+        this.timestamp = timestamp;
         this.metadata = metadata;
     }
 }

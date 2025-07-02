@@ -1,7 +1,7 @@
-import { LogRepository } from "@/infrastructure/repositories/LogRepository";
+import { LogRepository } from "../../infrastructure/repositories/LogRepository";
 import { CreateLogDto } from "../dtos/CreateLogDto";
-import { ILogRepository } from "@/domain/repositories/ILogRepository";
-import { Log } from "@/domain/entities/Log";
+import { ILogRepository } from "../../domain/repositories/ILogRepository";
+import { Log } from "../../domain/entities/Log";
 
 export class CreateLog {
     private _logRepository: ILogRepository;

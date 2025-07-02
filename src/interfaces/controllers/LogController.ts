@@ -1,14 +1,14 @@
-import { CreateLogDto, CreateLogSchema } from "@/application/dtos/CreateLogDto";
-import { FilterQueryDto, FilterQuerySchema } from "@/application/dtos/FilterQueryDto";
-import { Pageable, PageableDto, PageableSchemaDto } from "@/application/dtos/PageableDto";
-import { CreateLog } from "@/application/use-cases/CreateLog";
-import { GetAllPaginatedLogs } from "@/application/use-cases/GetAllPaginatedLogs";
-import { GetLogById } from "@/application/use-cases/GetLogById";
-import { GetLogsByFilter } from "@/application/use-cases/GetLogsByFilter";
-import { GetSummary } from "@/application/use-cases/GetSummary";
-import { SearchLogs } from "@/application/use-cases/SearchLogs";
-import { Log } from "@/domain/entities/Log";
-import { Summary } from "@/domain/entities/Summary";
+import { CreateLogDto, CreateLogSchema } from "../../application/dtos/CreateLogDto";
+import { FilterQueryDto, FilterQuerySchema } from "../../application/dtos/FilterQueryDto";
+import { Pageable, PageableDto, PageableSchemaDto } from "../../application/dtos/PageableDto";
+import { CreateLog } from "../../application/use-cases/CreateLog";
+import { GetAllPaginatedLogs } from "../../application/use-cases/GetAllPaginatedLogs";
+import { GetLogById } from "../../application/use-cases/GetLogById";
+import { GetLogsByFilter } from "../../application/use-cases/GetLogsByFilter";
+import { GetSummary } from "../../application/use-cases/GetSummary";
+import { SearchLogs } from "../../application/use-cases/SearchLogs";
+import { Log } from "../../domain/entities/Log";
+import { Summary } from "../../domain/entities/Summary";
 import { FastifyReply, FastifyRequest } from "fastify";
 
 // eslint-disable-next-line @typescript-eslint/no-extraneous-class
@@ -51,7 +51,6 @@ export class LogController {
 
     static async getAll(request: FastifyRequest, reply: FastifyReply): Promise<Pageable<Log>> {
         const queryParams = request.query as PageableDto;
-        console.log(queryParams);
         const parsedQuery = PageableSchemaDto.safeParse(queryParams);
 
         if(!parsedQuery.success) {

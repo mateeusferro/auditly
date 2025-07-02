@@ -1,6 +1,6 @@
-import { LogRepository } from "@/infrastructure/repositories/LogRepository";
-import { ILogRepository } from "@/domain/repositories/ILogRepository";
-import { Log } from "@/domain/entities/Log";
+import { LogRepository } from "../../infrastructure/repositories/LogRepository";
+import { ILogRepository } from "../../domain/repositories/ILogRepository";
+import { Log } from "../../domain/entities/Log";
 
 export class GetLogById {
     private _logRepository: ILogRepository;

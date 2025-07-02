@@ -1,10 +1,10 @@
-import { CreateLogDto } from "@/application/dtos/CreateLogDto";
+import { CreateLogDto } from "../../application/dtos/CreateLogDto";
 import { FastifyInstance, FastifyPluginOptions } from "fastify";
 import { LogSchema } from "../validators/LogValidate";
 import { LogController } from "../controllers/LogController";
-import { IRouter } from "@/interfaces/routes/IRouter";
-import { FilterQueryDto } from "@/application/dtos/FilterQueryDto";
-import { PageableDto } from "@/application/dtos/PageableDto";
+import { IRouter } from "../../interfaces/routes/IRouter";
+import { FilterQueryDto } from "../../application/dtos/FilterQueryDto";
+import { PageableDto } from "../../application/dtos/PageableDto";
 
 export class LogRoute implements IRouter {
     public prefix = "/log";

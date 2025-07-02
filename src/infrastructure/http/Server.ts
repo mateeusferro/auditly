@@ -1,6 +1,6 @@
 import fastify, { FastifyInstance } from "fastify";
 import { IServer } from "./IServer";
-import { IRouter } from "@/interfaces/routes/IRouter";
+import { IRouter } from "../../interfaces/routes/IRouter";
 
 export class Server implements IServer {
     private server: FastifyInstance;

@@ -1,8 +1,8 @@
-import { Log } from "@/domain/entities/Log";
-import { ILogRepository } from "@/domain/repositories/ILogRepository";
-import { LogRepository } from "@/infrastructure/repositories/LogRepository";
+import { Log } from "../../domain/entities/Log";
+import { ILogRepository } from "../../domain/repositories/ILogRepository";
+import { LogRepository } from "../../infrastructure/repositories/LogRepository";
 import { FilterQueryDto } from "../dtos/FilterQueryDto";
-import { Filter } from "@/domain/entities/Filter";
+import { Filter } from "../../domain/entities/Filter";
 
 export class GetLogsByFilter {
     private _logRepository: ILogRepository;
