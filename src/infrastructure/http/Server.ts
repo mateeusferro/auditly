@@ -16,7 +16,6 @@ export class Server implements IServer {
         this.port = init.port;
         this.host = init.host;
 
-        console.log(init);
         this.routes(init.routes);
         this.errorHandler();
     }
