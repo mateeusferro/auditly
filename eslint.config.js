@@ -26,7 +26,7 @@ export default tseslint.config(
     },
   },
   {
-    files: ["test/*.test.ts", "test/*.spec.ts"],
+    files: ["test/**/*.test.ts", "test/**/*.spec.ts"],
     plugins: {},
     rules: {
       "@typescript-eslint/unbound-method": "off",
