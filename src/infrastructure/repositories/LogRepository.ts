@@ -3,6 +3,10 @@ import { ILogRepository } from "@/domain/repositories/ILogRepository";
 import { PgConnection } from "../database/PgConnection";
 import { Pool, QueryResult } from "pg";
 import { Filter } from "@/domain/entities/Filter";
+import { buildFilter } from "../utils/QueryUtil";
+import { Pageable } from "@/application/dtos/PageableDto";
+import { ActionEnum } from "@/domain/entities/ActionEnum";
+import { DailyLog } from "@/domain/entities/DailyLog";
 
 export class LogRepository implements ILogRepository {
     private _db: Pool;
@@ -36,7 +40,7 @@ export class LogRepository implements ILogRepository {
     }
     
     async findLogsByFilter(filter: Filter): Promise<Log[]> {
-        const [values, conditions] = this.buildFilter(filter);
+        const [values, conditions] = buildFilter(filter);
         const whereClause = conditions.length > 0 ? `WHERE ${conditions.join(" AND ")}` : "";
         const query = `
             SELECT
@@ -87,40 +91,158 @@ export class LogRepository implements ILogRepository {
         return queryResult.rows[0];
     }
 
-    findAll(): Promise<Log[]> {
-        throw new Error("Method not implemented.");
+    async findAll(page: number, size: number): Promise<Pageable<Log>> {
+        const offset = (page - 1) * size;
+        const queryFindAll = `
+            SELECT
+                ID,
+                ACTION,
+                ACTOR,
+                METADATA,
+                RESOURCE,
+                TIMESTAMP
+            FROM AUDIT_LOGS
+            ORDER BY TIMESTAMP
+            LIMIT $1
+            OFFSET $2;
+        `;
+
+        const queryCountRow = `
+            SELECT
+                COUNT(ID) as ROWS
+            FROM AUDIT_LOGS;
+        `;
+        
+        const queryFindAllResult: QueryResult<Log> = await this._db
+            .query<Log>(queryFindAll, [size, offset])
+            .catch((err: unknown) => {
+                console.error(err);
+                throw new Error("Error while retrieving log with pagination");
+            });
+        
+        const queryCountRowResult: QueryResult<{ rows: number }> = await this._db
+            .query<{ rows: number }>(queryCountRow)
+            .catch((err: unknown) => {
+                console.error(err);
+                throw new Error("Error while retrieving the quantity of rows in log");
+            });
+        const totalRows = Number(queryCountRowResult.rows[0].rows);
+        const totalPages = Math.ceil(totalRows / size);
+        
+        return {
+            data: queryFindAllResult.rows,
+            rows: totalRows,
+            totalPages: totalPages
+        };
     }
 
-    private buildFilter(filter: Filter): [unknown[], string[]] {
-        const { actor, action, resource, from, to } = filter;
-        const values: unknown[] = [];
-        const conditions: string[] = [];
+    async search(q: string): Promise<Log[]> {
+        const input = `%${q}%`;
+        const query = `
+            SELECT
+                ID,
+                ACTION,
+                ACTOR,
+                METADATA,
+                RESOURCE,
+                TIMESTAMP
+            FROM AUDIT_LOGS
+            WHERE EXISTS (
+                SELECT 1
+                FROM JSONB_EACH_TEXT(METADATA) as KEY_VALUE
+                WHERE KEY_VALUE.VALUE LIKE $1
+            );
+        `;
 
-        if (actor) {
-            values.push(actor);
-            conditions.push(`ACTOR = $${String(values.length)}`);
-        }
+        const queryResult: QueryResult<Log> = await this._db
+            .query<Log>(query, [input])
+            .catch((err: unknown) => {
+                console.error(err);
+                throw new Error("Error while retrieving searched log");
+            });
+        
+        return queryResult.rows;
+    }
 
-        if (action) {
-            values.push(action);
-            conditions.push(`ACTION = $${String(values.length)}`);
-        }
+    async total(): Promise<number> {
+        const query = `
+            SELECT
+                COUNT(ID) as ROWS
+            FROM AUDIT_LOGS;
+        `;
 
-        if (resource) {
-            values.push(resource);
-            conditions.push(`RESOURCE = $${String(values.length)}`);
-        }
+        const queryResult: QueryResult<{ rows: number }> = await this._db
+            .query<{ rows: number }>(query)
+            .catch((err: unknown) => {
+                console.error(err);
+                throw new Error("Error while retrieving the quantity of rows in log");
+            });
 
-        if (from) {
-            values.push(from);
-            conditions.push(`TIMESTAMP >= $${String(values.length)}`);
-        }
+        return Number(queryResult.rows[0].rows);
+    }
 
-        if (to) {
-            values.push(to);
-            conditions.push(`TIMESTAMP <= $${String(values.length)}`);
-        }
+    async mostActiveActor(): Promise<string> {
+        const query = `
+            SELECT 
+                ACTOR,
+                COUNT(ID) as FREQUENCY
+            FROM AUDIT_LOGS
+            GROUP BY ACTOR
+            ORDER BY FREQUENCY DESC
+            LIMIT 1;
+        `;
 
-        return [values, conditions];
+        const queryResult: QueryResult<{ actor: string, frequency: number }> = await this._db
+            .query<{ actor: string, frequency: number }>(query)
+            .catch((err: unknown) => {
+                console.log(err);
+                throw new Error("Error while retrieving most active actor");
+            });
+        
+        const actor = queryResult.rows[0].actor;
+
+        return actor;
+    }
+    
+    async mostCommonAction(): Promise<ActionEnum> {
+        const query = `
+            SELECT 
+                ACTION,
+                COUNT(ID) as FREQUENCY
+            FROM AUDIT_LOGS
+            GROUP BY ACTION
+            ORDER BY FREQUENCY DESC
+            LIMIT 1;
+        `;
+
+        const queryResult: QueryResult<{ action: ActionEnum, frequency: number }> = await this._db
+            .query<{ action: ActionEnum, frequency: number }>(query)
+            .catch((err: unknown) => {
+                console.log(err);
+                throw new Error("Error while retrieving most common action");
+            });
+        
+        const action = queryResult.rows[0].action;
+
+        return action;
+    }
+    
+    async logsPerDay(): Promise<DailyLog[]> {
+        const query = `
+            SELECT
+                DATE(TIMESTAMP) as LOG_DATE, COUNT(ID)
+            FROM AUDIT_LOGS
+            GROUP BY LOG_DATE
+            ORDER BY LOG_DATE;
+        `;
+
+        const queryResult: QueryResult<DailyLog> = await this._db
+            .query<DailyLog>(query)
+            .catch((err: unknown) => {
+                console.log(err);
+                throw new Error("Error while retrieving quantity of logs per day");
+            });
+
+        return queryResult.rows;
     }
 }
