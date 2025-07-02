@@ -3,7 +3,7 @@ import { ILogRepository } from "@/domain/repositories/ILogRepository";
 import { PgConnection } from "../database/PgConnection";
 import { Pool, QueryResult } from "pg";
 import { Filter } from "@/domain/entities/Filter";
-import { buildFilter } from "../utils/QueryUtil";
+import { buildFilter } from "../utils/FilterUtil";
 import { Pageable } from "@/application/dtos/PageableDto";
 import { ActionEnum } from "@/domain/entities/ActionEnum";
 import { DailyLog } from "@/domain/entities/DailyLog";
