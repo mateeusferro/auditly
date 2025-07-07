@@ -1,4 +1,4 @@
-import { Filter } from "@/domain/entities/Filter";
+import { Filter } from "../../domain/entities/Filter";
 
 export function buildFilter(filter: Filter): [unknown[], string[]] {
     const { actor, action, resource, from, to } = filter;

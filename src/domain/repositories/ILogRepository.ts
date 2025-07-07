@@ -1,4 +1,4 @@
-import { Pageable } from "@/application/dtos/PageableDto";
+import { Pageable } from "../../application/dtos/PageableDto";
 import { Filter } from "../entities/Filter";
 import { Log } from "../entities/Log";
 import { ActionEnum } from "../entities/ActionEnum";

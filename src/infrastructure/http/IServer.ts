@@ -1,4 +1,4 @@
-import { IRouter } from "@/interfaces/routes/IRouter";
+import { IRouter } from "../../interfaces/routes/IRouter";
 
 export interface IServer {
 
